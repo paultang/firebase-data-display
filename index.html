@@ -21,14 +21,14 @@
 
             // Your web app's Firebase configuration
             const firebaseConfig = {
-      apiKey: "AIzaSyCCO_bV2UNNxc-kk8j2px_DnBFEeYERiq0",
-       authDomain: "my-project-for-firebase-1.firebaseapp.com",
-       databaseURL: "https://my-project-for-firebase-1.firebaseio.com",
-       projectId: "my-project-for-firebase-1",
-       storageBucket: "my-project-for-firebase-1.appspot.com",
-       messagingSenderId: "999087300802",
-       appId: "1:999087300802:web:16e7e7df73b4a12e0e1b5b"
-    };
+              apiKey: "AIzaSyCCO_bV2UNNxc-kk8j2px_DnBFEeYERiq0",
+              authDomain: "my-project-for-firebase-1.firebaseapp.com",
+              databaseURL: "https://my-project-for-firebase-1.firebaseio.com",
+              projectId: "my-project-for-firebase-1",
+              storageBucket: "my-project-for-firebase-1.appspot.com",
+              messagingSenderId: "999087300802",
+              appId: "1:999087300802:web:16e7e7df73b4a12e0e1b5b"
+              };
 
             // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
@@ -39,7 +39,7 @@
                 statusElement.textContent = 'Fetching data from Firebase...';
                 
                 const dbRef = database.ref('mold');
-                dbRef.limitToLast(1).once('value', (snapshot) => {
+                dbRef.limitToLast(1).on('value', (snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         const latestDataKey = Object.keys(data)[0];
@@ -50,7 +50,7 @@
                         dataElement.textContent = 'No data available';
                         statusElement.textContent = 'No data available in Firebase.';
                     }
-                }).catch((error) => {
+                }, (error) => {
                     statusElement.textContent = 'Error fetching data: ' + error.message;
                 });
             }
