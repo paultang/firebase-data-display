@@ -1,24 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Firebase Data Display</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-  <style>
-    #status {
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Latest Data from Firebase</h1>
-  <div id="status">Connecting to Firebase...</div>
-  <div id="data"></div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Data Display</title>
+    <script defer src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusElement = document.getElementById('status');
+            const dataElement = document.getElementById('data');
 
-  <script>
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
+            statusElement.textContent = 'Connecting to Firebase...';
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
       apiKey: "AIzaSyCCO_bV2UNNxc-kk8j2px_DnBFEeYERiq0",
        authDomain: "my-project-for-firebase-1.firebaseapp.com",
        databaseURL: "https://my-project-for-firebase-1.firebaseio.com",
@@ -28,27 +24,39 @@
        appId: "1:999087300802:web:16e7e7df73b4a12e0e1b5b"
     };
 
-    // Initialize Firebase
-    try {
-      firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
-      document.getElementById('status').innerText = 'Connected to Firebase. Loading data...';
+            // Initialize Firebase
+            const app = firebase.initializeApp(firebaseConfig);
+            const database = firebase.database(app);
 
-      // Reference to the /mold node
-      const moldRef = database.ref('/mold');
+            // Function to fetch and display the latest data
+            function fetchData() {
+                statusElement.textContent = 'Fetching data from Firebase...';
+                
+                const dbRef = firebase.database().ref('mold');
+                dbRef.limitToLast(1).once('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        const latestDataKey = Object.keys(data)[0];
+                        const latestData = data[latestDataKey];
+                        dataElement.textContent = JSON.stringify(latestData, null, 2);
+                        statusElement.textContent = 'Data fetched successfully.';
+                    } else {
+                        dataElement.textContent = 'No data available';
+                        statusElement.textContent = 'No data available in Firebase.';
+                    }
+                }).catch((error) => {
+                    statusElement.textContent = 'Error fetching data: ' + error.message;
+                });
+            }
 
-      // Function to update the web page with the latest data
-      moldRef.orderByKey().limitToLast(1).on('child_added', (snapshot) => {
-        const data = snapshot.val();
-        document.getElementById('data').innerText = JSON.stringify(data, null, 2);
-        document.getElementById('status').innerText = 'Data loaded successfully.';
-      }, (error) => {
-        document.getElementById('status').innerText = 'Failed to load data: ' + error.message;
-      });
-
-    } catch (error) {
-      document.getElementById('status').innerText = 'Failed to connect to Firebase: ' + error.message;
-    }
-  </script>
+            // Fetch data on page load
+            fetchData();
+        });
+    </script>
+</head>
+<body>
+    <h1>Firebase Data Display</h1>
+    <div id="status">Initializing...</div>
+    <pre id="data"></pre>
 </body>
 </html>
