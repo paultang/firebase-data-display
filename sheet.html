@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>最新信息窗口</title>
+    <script>
+        function fetchData() {
+            fetch('https://script.google.com/macros/s/AKfycbzCzM57WWrKqD7jUAXH8dp2Yev2sSPBl09ezNJdXp-6RSnVdzAWvGgBBc9n9zM45yH45g/exec') // 替换为你的 Web 应用 URL
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('timestamp').innerText = data.timestamp;
+                document.getElementById('name').innerText = data.name;
+                document.getElementById('email').innerText = data.email;
+                document.getElementById('comments').innerText = data.comments;
+            });
+        }
+        
+        // 定期更新数据
+        setInterval(fetchData, 30000); // 每 30 秒请求一次
+        
+        // 初始加载
+        window.onload = fetchData;
+    </script>
+</head>
+<body>
+    <h1>最新信息</h1>
+    <div>
+        <strong>时间戳:</strong> <span id="timestamp">等待数据...</span><br>
+        <strong>名字:</strong> <span id="name">等待数据...</span><br>
+        <strong>邮箱:</strong> <span id="email">等待数据...</span><br>
+        <strong>评论:</strong> <span id="comments">等待数据...</span><br>
+    </div>
+</body>
+</html>
