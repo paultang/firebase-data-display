@@ -41,13 +41,15 @@
                 statusElement.textContent = 'Fetching data from Firebase...';
 
                 const dbRef = database.ref('mold');
-                dbRef.orderByKey().limitToLast(1).on('child_added', (snapshot) => {
+
+   
+dbRef.orderByChild('timestamp').limitToLast(1).on('value', function(snapshot) {
                 const data = snapshot.val();
                 document.getElementById('data').innerText = JSON.stringify(data, null, 2);
                 document.getElementById('status').innerText = 'Data loaded successfully.';
-  }, (error) => {
-    document.getElementById('status').innerText = 'Failed to load data: ' + error.message;
-  });
+                        }, (error) => {
+                            document.getElementById('status').innerText = 'Failed to load data: ' + error.message;
+                            });
 
                 dbRef.limitToLast(1).once('value', (snapshot) => {
                     if (snapshot.exists()) {
