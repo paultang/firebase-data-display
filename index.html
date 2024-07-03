@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Data Display</title>
-    <script defer src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
-    <script defer>
-        document.addEventListener("DOMContentLoaded", function() {
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
+</head>
+<body>
+    <h1>Firebase Data Display</h1>
+    <div id="status">Initializing...</div>
+    <pre id="data"></pre>
+
+    <script>
+        (function() {
             const statusElement = document.getElementById('status');
             const dataElement = document.getElementById('data');
 
@@ -25,14 +31,14 @@
     };
 
             // Initialize Firebase
-            const app = firebase.initializeApp(firebaseConfig);
-            const database = firebase.database(app);
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
 
             // Function to fetch and display the latest data
             function fetchData() {
                 statusElement.textContent = 'Fetching data from Firebase...';
                 
-                const dbRef = firebase.database().ref('mold');
+                const dbRef = database.ref('mold');
                 dbRef.limitToLast(1).once('value', (snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
@@ -51,12 +57,7 @@
 
             // Fetch data on page load
             fetchData();
-        });
+        })();
     </script>
-</head>
-<body>
-    <h1>Firebase Data Display</h1>
-    <div id="status">Initializing...</div>
-    <pre id="data"></pre>
 </body>
 </html>
