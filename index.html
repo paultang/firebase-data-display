@@ -42,8 +42,10 @@
                 dbRef.limitToLast(1).once('value', (snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
+                        console.log('Snapshot data:', data); // Add this line to log the snapshot data
                         const latestDataKey = Object.keys(data)[0];
                         const latestData = data[latestDataKey];
+                        console.log('Latest data:', latestData); // Add this line to log the latest data
                         dataElement.textContent = `Name: ${latestData.name}\nEmail: ${latestData.email}\nComments: ${latestData.comments}\nSubmitted At: ${latestData.submitted_at}`;
                         statusElement.textContent = 'Data fetched successfully.';
                     } else {
