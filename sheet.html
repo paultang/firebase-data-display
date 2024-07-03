@@ -4,7 +4,7 @@
     <title>最新信息窗口</title>
     <script>
         function fetchData() {
-            fetch('https://script.google.com/macros/s/AKfycbzCzM57WWrKqD7jUAXH8dp2Yev2sSPBl09ezNJdXp-6RSnVdzAWvGgBBc9n9zM45yH45g/exec') // 替换为你的 Web 应用 URL
+            fetch('https://script.google.com/macros/s/AKfycbzGWKOboh28d55pXiQRf0RqlPQ_ebF5wBsQbF2pOFJzQjPPxn-TGbd0kvg_W_nWnYHtcw/exec') // 替换为你的 Web 应用 URL
             .then(response => response.json())
             .then(data => {
                 document.getElementById('timestamp').innerText = data.timestamp;
