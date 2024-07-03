@@ -37,18 +37,20 @@
             // Function to fetch and display the latest data
             function fetchData() {
                 statusElement.textContent = 'Fetching data from Firebase...';
-                
+
                 const dbRef = database.ref('mold');
-                dbRef.limitToLast(1).on('child_added', (snapshot) => {
+                dbRef.limitToLast(1).once('value', (snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
-                        dataElement.textContent = JSON.stringify(data, null, 2);
+                        const latestDataKey = Object.keys(data)[0];
+                        const latestData = data[latestDataKey];
+                        dataElement.textContent = `Name: ${latestData.name}\nEmail: ${latestData.email}\nComments: ${latestData.comments}\nSubmitted At: ${latestData.submitted_at}`;
                         statusElement.textContent = 'Data fetched successfully.';
                     } else {
                         dataElement.textContent = 'No data available';
                         statusElement.textContent = 'No data available in Firebase.';
                     }
-                }, (error) => {
+                }).catch((error) => {
                     statusElement.textContent = 'Error fetching data: ' + error.message;
                 });
             }
